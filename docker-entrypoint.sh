@@ -343,8 +343,9 @@ docker_setup_db() {
 
         if [ "$MYSQL_REPLICATION_USER" -a "$MYSQL_REPLICATION_PASSWORD" ]; then
 		mysql_note "Creating replication user ${MYSQL_REPLICATION_USER}"
-		docker_process_sql --database=mysql <<<"CREATE USER '$MYSQL_REPLICATION_USER'@'%' IDENTIFIED WITH mysql_native_password BY '$MYSQL_REPLICATION_PASSWORD' ;"
-                docker_process_sql --database=mysql <<<"GRANT REPLICATION SLAVE ON *.* TO '$MYSQL_REPLICATION_USER'@'%' IDENTIFIED WITH mysql_native_password BY '$MYSQL_REPLICATION_PASSWORD';"
+		docker_process_sql --database=mysql <<<"CREATE USER '$MYSQL_REPLICATION_USER'@'%' IDENTIFIED BY '$MYSQL_REPLICATION_PASSWORD' ;"
+		mysql_note "Grant replication slave to user ${MYSQL_REPLICATION_USER}"
+                docker_process_sql --database=mysql <<<"GRANT REPLICATION SLAVE ON *.* TO '$MYSQL_REPLICATION_USER'@'%' IDENTIFIED BY '$MYSQL_REPLICATION_PASSWORD' ;"
 	fi
 }
 
